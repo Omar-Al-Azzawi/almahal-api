@@ -1,20 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-export interface User extends mongoose.Document {
+import { ProductDocument } from './Product'
+
+export type UserDocument = Document &  {
   username: string,
   email: string;
   password: string;
+  products: ProductDocument[];
 }
 
-const userSchema = new mongoose.Schema<User>(
+const userSchema = new mongoose.Schema<UserDocument>(
     {
         username: { type: String, required: true },
         email: { type: String, required: true },
         password: { type: String, required: true },
+        products: [{ type: Schema.Types.ObjectId, ref: 'Product' }]
     },
     {
         timestamps: true
     }
 );
 
-export default mongoose.model<User>('User', userSchema);
+export default mongoose.model<UserDocument>('User', userSchema);
