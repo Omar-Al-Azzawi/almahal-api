@@ -1,7 +1,7 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import helmet from "helmet";
 import authRoutes from './src/routes/authRoutes';
 import productRoutes from './src/routes/productRoutes'
 import { authenticateToken } from './src/middlewares/authMiddleware';
@@ -12,7 +12,9 @@ const app = express();
 
 dotenv.config()
 app.use(cors());
+app.use(helmet())
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }))
 
 connectToMongoDB()
 
