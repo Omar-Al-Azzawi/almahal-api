@@ -5,16 +5,16 @@ import User from '../models/User';
 // CREATE - Create a new product
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, type, quantity, length, manufacture, price, owner } = req.body;
+    const { name, description, type, quantity, length, manufacture, price, createdBy, updatedBy } = req.body;
 
-    if (!owner) {
-      return res.status(400).json({ message: 'Owner ID is required' });
+    if (!createdBy) {
+      return res.status(400).json({ message: 'Created By ID is required' });
     }
 
-    const product = new Product({ name, description, type, quantity, length, manufacture, price, owner });
+    const product = new Product({ name, description, type, quantity, length, manufacture, price, createdBy, updatedBy });
     await product.save();
 
-    const user = await User.findById(owner);
+    const user = await User.findById(createdBy);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
