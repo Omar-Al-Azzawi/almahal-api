@@ -11,9 +11,9 @@ export type UserDocument = Document &  {
 
 const userSchema = new mongoose.Schema<UserDocument>(
     {
-        username: { type: String, required: true },
+        username: { type: String, minlength: 4 , required: true },
         email: { type: String, required: true },
-        password: { type: String, required: true },
+        password: { type: String, minlength: 8, required: true },
         products: [{ type: Schema.Types.ObjectId, ref: 'Product' }]
     },
     {

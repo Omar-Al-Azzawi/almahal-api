@@ -1,4 +1,5 @@
 import express from 'express';
+import { authenticateToken } from "../middlewares/authMiddleware"
 import { 
     createProduct,
     getProducts,
@@ -9,10 +10,10 @@ import {
 
 const router = express.Router();
 
-router.post('/products', createProduct);
 router.get('/products', getProducts);
 router.get('/products/:id', getProductById);
-router.put('/products/:id', updateProduct);
-router.delete('/products/:id', deleteProduct);
+router.post('/products', authenticateToken, createProduct);
+router.put('/products/:id', authenticateToken, updateProduct);
+router.delete('/products/:id', authenticateToken, deleteProduct);
 
 export default router;
