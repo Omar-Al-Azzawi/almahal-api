@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 import { UserDocument } from './User';
+import { ShopDocument } from './Shop';
 
 export type ProductDocument = Document & {
   name: string;
@@ -11,7 +12,7 @@ export type ProductDocument = Document & {
   manufacture: string
   price: number;
   createdBy: UserDocument
-  updatedBy: UserDocument
+  //shop?: mongoose.Types.ObjectId;
 }
 
 const productSchema = new Schema<ProductDocument>(
@@ -28,11 +29,7 @@ const productSchema = new Schema<ProductDocument>(
             ref: 'User',
             required: true
         },
-        updatedBy: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
-        }
+        //shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
     },
     {
         timestamps: true
