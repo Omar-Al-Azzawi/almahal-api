@@ -12,7 +12,6 @@ export type ProductDocument = Document & {
   manufacture: string
   price: number;
   createdBy: UserDocument
-  //shop?: mongoose.Types.ObjectId;
 }
 
 const productSchema = new Schema<ProductDocument>(
@@ -29,7 +28,6 @@ const productSchema = new Schema<ProductDocument>(
             ref: 'User',
             required: true
         },
-        //shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
     },
     {
         timestamps: true

@@ -35,3 +35,19 @@ export const addProductToShop = async (req: Request, res: Response) => {
     res.status(500).json({ error: error });
   }
 };
+
+export const getShopProducts = async (req: Request, res: Response) => {
+  try {
+    const { shopId } = req.params;
+
+    const shop = await Shop.findById(shopId).populate('products');
+
+    if (!shop) {
+      return res.status(404).json({ message: 'Shop not found' });
+    }
+
+    res.status(200).json({ products: shop.products });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
