@@ -15,3 +15,11 @@ Before running this project, ensure you have the following installed:
 
    ```bash
    git clone https://github.com/yourusername/your-repo.git
+
+
+## Environment
+
+   ```bash
+   cp .env.example .env
+
+   
