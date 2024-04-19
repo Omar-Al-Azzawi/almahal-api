@@ -5,6 +5,7 @@ import helmet from "helmet";
 import authRoutes from './src/routes/authRoutes';
 import productRoutes from './src/routes/productRoutes'
 import shopRoutes from './src/routes/shopRoutes'
+import companyRoutes from './src/routes/companyRoutes'
 import { authenticateToken } from './src/middlewares/authMiddleware';
 import dotenv from "dotenv"
 import connectToMongoDB from './db';
@@ -22,6 +23,7 @@ connectToMongoDB()
 app.use('/auth', authRoutes);
 app.use('/', productRoutes);
 app.use('/', shopRoutes);
+app.use('/', companyRoutes)
 
 app.get('/protected-route', authenticateToken, (req, res) => {
   res.status(200).json({ message: 'You have accessed the protected route', user: req.body });
