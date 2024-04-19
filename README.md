@@ -16,10 +16,7 @@ Before running this project, ensure you have the following installed:
    ```bash
    git clone https://github.com/yourusername/your-repo.git
 
-
-## Environment
-
+2. create your environment file;
+   
    ```bash
    cp .env.example .env
-
-   
