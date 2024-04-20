@@ -1,7 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 import { UserDocument } from './User';
-import { ShopDocument } from './Shop';
 
 export type ProductDocument = Document & {
   name: string;

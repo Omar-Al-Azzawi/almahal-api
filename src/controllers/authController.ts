@@ -3,6 +3,27 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
+function validatePassword(password: string) {
+  if (password.length < 8) {
+      return "Password must be at least 8 characters long.";
+  }
+  if (!/[a-z]/.test(password)) {
+      return "Password must contain at least one lowercase letter.";
+  }
+  if (!/[A-Z]/.test(password)) {
+      return "Password must contain at least one uppercase letter.";
+  }
+  if (!/\d/.test(password)) {
+      return "Password must contain at least one digit.";
+  }
+  if (!/[@#$%^&+=]/.test(password)) {
+      return "Password must contain at least one special character (@#$%^&+=).";
+  }
+
+  return null;
+}
+
+
 export const register = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
@@ -10,6 +31,11 @@ export const register = async (req: Request, res: Response) => {
 
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      return res.status(400).json({ message: passwordError });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
