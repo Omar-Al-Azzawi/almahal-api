@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Product from '../models/Product';
 import User from '../models/User';
+import Note from '../models/Note';
 
 // CREATE - Create a new product
 export const createProduct = async (req: Request, res: Response) => {
@@ -91,3 +92,31 @@ export const deleteProduct = async (req: Request, res: Response) => {
     res.status(500).json({ error: error });
   }
 };
+
+export const addNoteToProduct = async (req: Request, res: Response) => {
+  try {
+    const { productId, type, title, content, ownerId } = req.body;
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    const user = await User.findById(ownerId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const note = new Note({
+      type,
+      title,
+      content,
+      owner: ownerId
+    });
+    
+    await note.save();
+
+    product.notes.push(note._id);
+    await product.save();res.status(201).json({ message: 'Note added to product successfully', note });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+}

@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
 
 import { UserDocument } from './User';
 
@@ -10,6 +10,7 @@ export type ProductDocument = Document & {
   length: number
   manufacture: string
   price: number;
+  notes: Types.ObjectId[];
   createdBy: UserDocument
 }
 
@@ -22,6 +23,7 @@ const productSchema = new Schema<ProductDocument>(
         quantity: { type: Number, required: true},
         length: { type: Number, required: true},
         manufacture: { type: String, required: true},
+        notes: [{ type: Schema.Types.ObjectId, ref: 'Note' }],
         createdBy: {
             type: Schema.Types.ObjectId,
             ref: 'User',
