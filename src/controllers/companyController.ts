@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Company from '../models/Company';
+import Shop from '../models/Shop';
 
 export const createCompany = async (req: Request, res: Response) => {
     try {
@@ -42,4 +43,26 @@ export const getCompanies = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ error: error})
     }
+}
+
+export const addShopTOCompany = async (req: Request, res: Response) => {
+  try {
+    const { shopId, companyId } = req.body;
+
+    const shop = await Shop.findById(shopId)
+    const company = await Company.findById(companyId)
+
+    console.log({ shop })
+ 
+    if (!shop || !company) {
+      return res.status(404).json({ message: 'Company or shop not found' });
+    }
+
+    company.shops.push(shop._id);
+    await company.save();
+
+    res.status(200).json({ message: 'Shop added to company successfully', company, shop });
+  } catch (error) {
+    res.status(500).json({ error: error})
+  }
 }
