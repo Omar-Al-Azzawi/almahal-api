@@ -111,11 +111,28 @@ export const addNoteToProduct = async (req: Request, res: Response) => {
       content,
       owner: ownerId
     });
-    
+
     await note.save();
 
     product.notes.push(note._id);
     await product.save();res.status(201).json({ message: 'Note added to product successfully', note });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+}
+
+export const getProductNotes = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.id
+    const product = await Product.findById(productId).populate('notes');
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    const notes = product.notes;
+
+    res.status(200).json({ notes });
   } catch (error) {
     res.status(500).json({ error: error });
   }
