@@ -4,9 +4,9 @@ import { addShopTOCompany, createCompany, getCompanies, getCompanyById } from '.
 
 const router = express.Router();
 
-router.post('/company', authenticateToken, createCompany);
-router.post('/add-shop', authenticateToken, addShopTOCompany)
-router.get('/company', authenticateToken, getCompanyById)
-router.get('/companies', getCompanies)
+router.get('/', getCompanies);
+router.get('/:id', authenticateToken, getCompanyById);
+router.post('/create', authenticateToken, createCompany);
+router.post('/add-shop-company', authenticateToken, addShopTOCompany);
 
 export default router;

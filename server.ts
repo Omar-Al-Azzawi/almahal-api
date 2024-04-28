@@ -21,9 +21,9 @@ app.use(express.urlencoded({ extended: true }))
 connectToMongoDB()
 
 app.use('/auth', authRoutes);
-app.use('/', productRoutes);
-app.use('/', shopRoutes);
-app.use('/', companyRoutes)
+app.use('/products', productRoutes);
+app.use('/shop', shopRoutes);
+app.use('/company', companyRoutes)
 
 app.get('/protected-route', authenticateToken, (req, res) => {
   res.status(200).json({ message: 'You have accessed the protected route', user: req.body });

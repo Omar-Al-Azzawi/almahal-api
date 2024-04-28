@@ -4,8 +4,8 @@ import { createShop, addProductToShop, getShopProducts } from '../controllers/sh
 
 const router = express.Router();
 
-router.post('/shop', authenticateToken, createShop);
-router.post('/add-product', authenticateToken, addProductToShop);
-router.get('/shop/:shopId/products', authenticateToken, getShopProducts);
+router.post('/create', authenticateToken, createShop);
+router.post('/add-product-shop', authenticateToken, addProductToShop);
+router.get('/:shopId/products', authenticateToken, getShopProducts);
 
 export default router;
