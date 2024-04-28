@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import Shop from '../models/Shop';
 import Product from '../models/Product';
 
-// CREATE - Create a new shop
 export const createShop = async (req: Request, res: Response) => {
   try {
     const { name, owner } = req.body;

@@ -3,7 +3,6 @@ import Product from '../models/Product';
 import User from '../models/User';
 import Note from '../models/Note';
 
-// CREATE - Create a new product
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const { name, description, type, quantity, length, manufacture, price, createdBy } = req.body;
@@ -30,7 +29,6 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-// READ - Get all products
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const ownerId = req.body.ownerId;
@@ -42,7 +40,6 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
-// READ - Get a single product by ID
 export const getProductById = async (req: Request, res: Response) => {
   try {
     const productId = req.params.id;
@@ -58,7 +55,6 @@ export const getProductById = async (req: Request, res: Response) => {
   }
 };
 
-// UPDATE - Update a product by ID
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.id;
@@ -76,7 +72,6 @@ export const updateProduct = async (req: Request, res: Response) => {
   }
 };
 
-// DELETE - Delete a product by ID
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.id;
