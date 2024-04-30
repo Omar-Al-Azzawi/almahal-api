@@ -1,4 +1,4 @@
-# RESTful API with Express, Mongoose, and TypeScript for (ALMAHAL)
+# ALMAHAL API
 
 this is a RESTful API for a project idea to connect shops  
 
@@ -16,13 +16,15 @@ Before running this project, ensure you have the following installed:
    ```bash
    git clone https://github.com/yourusername/your-repo.git
 
-2. create your environment file;
+2. create your environment file:
+
+   After copying the file, ensure to include your MongoDB connection link for the environment.
    
    ```bash
    cp .env.example .env
 
 3. install dependencies and run the dev environment
   
-  ```bash
-  npm i & npm start
+   ```bash
+   npm i & npm start
 
