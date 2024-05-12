@@ -2,6 +2,24 @@ import { Request, Response } from 'express';
 import Product from '../models/Product';
 import User from '../models/User';
 import Note from '../models/Note';
+import dotenv from 'dotenv'
+
+import { S3Client, PutObjectAclCommand } from '@aws-sdk/client-s3';
+
+dotenv.config()
+
+const bucketName = process.env.BUCKET_NAME
+const bucketRegion = process.env.BUCKET_REGION
+const accessKey = process.env.ACCESS_KEY
+const secretAccessKey = process.env.SECRET_ACCESS_KEY
+
+const s3 = new S3Client({ 
+  region: bucketRegion, 
+  credentials: { 
+    accessKeyId: accessKey as string, 
+    secretAccessKey: secretAccessKey  as string
+  }
+});
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
@@ -10,6 +28,17 @@ export const createProduct = async (req: Request, res: Response) => {
     if (!createdBy) {
       return res.status(400).json({ message: 'Created By ID is required' });
     }
+
+    const params = {
+      Bucket: bucketName,
+      Key: `${Date.now()}-${req.file?.originalname}`,
+      Body: req.file?.buffer,
+      ContentType: req.file?.mimetype
+    }
+
+    const command = new PutObjectAclCommand(params)
+
+    await s3.send(command)
 
     const product = new Product({ name, description, type, quantity, length, manufacture, price, createdBy });
     await product.save();
