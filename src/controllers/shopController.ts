@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Shop from '../models/Shop';
 import Product from '../models/Product';
+import Warehouse from '../models/warehouse'
 
 export const createShop = async (req: Request, res: Response) => {
   try {
@@ -26,8 +27,16 @@ export const addProductToShop = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Product or shop not found' });
     }
 
-    shop.products.push(product._id);
-    await shop.save();
+    const warehouse = await Warehouse.findOne({ products: product._id });
+    if (warehouse) {
+       warehouse.products = warehouse.products.filter(p => p.toString() !== product._id.toString());
+       await warehouse.save();
+    }
+
+    if (!shop.products.includes(product._id)) {
+      shop.products.push(product._id);
+      await shop.save();
+    }
 
     res.status(200).json({ message: 'Product added to shop successfully', product, shop });
   } catch (error) {

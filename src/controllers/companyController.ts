@@ -45,7 +45,7 @@ export const getCompanies = async (req: Request, res: Response) => {
     }
 }
 
-export const addShopTOCompany = async (req: Request, res: Response) => {
+export const addShopToCompany = async (req: Request, res: Response) => {
   try {
     const { shopId, companyId } = req.body;
 

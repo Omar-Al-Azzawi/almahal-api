@@ -3,14 +3,14 @@ import mongoose, { Document, Schema, Types } from 'mongoose';
 import { UserDocument } from './User';
 
 export type ProductDocument = Document & {
-  name: string;
-  description: string;
+  name: string
+  description: string
   type: string
   quantity: number
   length: number
   manufacture: string
-  price: number;
-  notes: Types.ObjectId[];
+  price: number
+  notes: Types.ObjectId[]
   createdBy: UserDocument
 }
 

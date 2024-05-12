@@ -4,11 +4,11 @@ import { ProductDocument } from './Product'
 import { ShopDocument } from './Shop';
 
 export type UserDocument = Document &  {
-  username: string,
-  email: string;
-  password: string;
-  products: ProductDocument[];
-  shop?: ShopDocument;
+  username: string
+  email: string
+  password: string
+  products: ProductDocument[]
+  shop?: ShopDocument
 }
 
 const userSchema = new mongoose.Schema<UserDocument>(

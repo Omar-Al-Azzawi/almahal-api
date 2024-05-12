@@ -1,12 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
 
-export type ShopDocument = Document & {
+export type WarehouseDocument = Document & {
     name: string
     owner: Schema.Types.ObjectId
     products: Schema.Types.ObjectId[]
 }
 
-const shopSchema = new mongoose.Schema<ShopDocument>(
+const warehouseSchema = new mongoose.Schema<WarehouseDocument>(
     {
         name: { type: String, required: true },
         owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -17,4 +17,4 @@ const shopSchema = new mongoose.Schema<ShopDocument>(
     }
 );
 
-export default mongoose.model<ShopDocument>('Shop', shopSchema);
+export default mongoose.model<WarehouseDocument>('Warehouse', warehouseSchema);

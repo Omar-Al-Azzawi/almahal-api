@@ -26,5 +26,5 @@ Before running this project, ensure you have the following installed:
 3. install dependencies and run the dev environment
   
    ```bash
-   npm i & npm start
+   npm i && npm start
 

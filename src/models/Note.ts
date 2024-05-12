@@ -1,10 +1,10 @@
 import mongoose, { Schema } from 'mongoose';
 
 export type NoteDocument = Document & {
-    type: string;
-    title: string;
+    type: string
+    title: string
     content: string
-    owner: Schema.Types.ObjectId;
+    owner: Schema.Types.ObjectId
 }
 
 const noteSchema = new mongoose.Schema<NoteDocument>(

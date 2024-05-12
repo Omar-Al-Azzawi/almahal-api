@@ -1,0 +1,61 @@
+import { Request, Response } from 'express';
+import Warehouse from '../models/warehouse';
+import Product from '../models/Product';
+import Shop from '../models/Shop'
+
+export const createWarehouse = async (req: Request, res: Response) => {
+    try {
+       const { name, owner } = req.body;
+
+       const shop = new Warehouse({ name, owner });
+       await shop.save();
+
+       res.status(201).json({ message: 'Warehouse created successfully', shop });
+    } catch (error) {
+        res.status(500).json({ error: error });
+    }
+}
+
+export const addProductToWarehouse = async (req: Request, res: Response) => {
+    try {
+        const { productId, warehouseId } = req.body;
+
+        const product = await Product.findById(productId);
+        const warehouse = await Warehouse.findById(warehouseId)
+
+        if (!product || !warehouse) {
+          return res.status(404).json({ message: 'Product or warehouse not found' });
+        }
+
+        const shop = await Shop.findOne({ products: product._id });
+        if (shop) {
+            shop.products = shop.products.filter(p => p.toString() !== product._id.toString());
+            await shop.save();
+        }
+
+        if (!warehouse.products.includes(product._id)) {
+            warehouse.products.push(product._id);
+            await warehouse.save();
+        }
+
+        res.status(200).json({ message: 'Product added to warehouse successfully', product, warehouse });
+    } catch (error) {
+        res.status(500).json({ error: error });
+    }
+}
+
+export const getWarehouseProduct = async (req: Request, res: Response) => {
+    try {
+        const { warehouseId } = req.params;
+    
+        const warehouse = await Warehouse.findById(warehouseId).populate('products');
+    
+        if (!warehouse) {
+          return res.status(404).json({ message: 'Warehouse not found' });
+        }
+    
+        res.status(200).json({ products: warehouse.products });
+      } catch (error) {
+        res.status(500).json({ error: error });
+      }
+}
