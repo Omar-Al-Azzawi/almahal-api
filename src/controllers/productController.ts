@@ -4,41 +4,42 @@ import User from '../models/User';
 import Note from '../models/Note';
 import dotenv from 'dotenv'
 
-import { S3Client, PutObjectAclCommand } from '@aws-sdk/client-s3';
+//import { S3Client, PutObjectAclCommand } from '@aws-sdk/client-s3';
 
 dotenv.config()
 
-const bucketName = process.env.BUCKET_NAME
-const bucketRegion = process.env.BUCKET_REGION
-const accessKey = process.env.ACCESS_KEY
-const secretAccessKey = process.env.SECRET_ACCESS_KEY
+// const bucketName = process.env.BUCKET_NAME
+// const bucketRegion = process.env.BUCKET_REGION
+// const accessKey = process.env.ACCESS_KEY
+// const secretAccessKey = process.env.SECRET_ACCESS_KEY
 
-const s3 = new S3Client({ 
-  region: bucketRegion, 
-  credentials: { 
-    accessKeyId: accessKey as string, 
-    secretAccessKey: secretAccessKey  as string
-  }
-});
+// const s3 = new S3Client({ 
+//   region: bucketRegion, 
+//   credentials: { 
+//     accessKeyId: accessKey as string, 
+//     secretAccessKey: secretAccessKey  as string
+//   }
+// });
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, type, quantity, length, manufacture, price, createdBy } = req.body;
+    const createdBy = (req as any).user.userId
+    const { name, description, type, quantity, length, manufacture, price } = req.body;
 
     if (!createdBy) {
       return res.status(400).json({ message: 'Created By ID is required' });
     }
 
-    const params = {
-      Bucket: bucketName,
-      Key: `${Date.now()}-${req.file?.originalname}`,
-      Body: req.file?.buffer,
-      ContentType: req.file?.mimetype
-    }
+    // const params = {
+    //   Bucket: bucketName,
+    //   Key: `${Date.now()}-${req.file?.originalname}`,
+    //   Body: req.file?.buffer,
+    //   ContentType: req.file?.mimetype
+    // }
 
-    const command = new PutObjectAclCommand(params)
+    // const command = new PutObjectAclCommand(params)
 
-    await s3.send(command)
+    // await s3.send(command)
 
     const product = new Product({ name, description, type, quantity, length, manufacture, price, createdBy });
     await product.save();
@@ -59,9 +60,8 @@ export const createProduct = async (req: Request, res: Response) => {
 };
 
 export const getProducts = async (req: Request, res: Response) => {
-  try {
-    const ownerId = req.body.ownerId;
-    const products = await Product.find({ ownerId });
+  try {    
+    const products = await Product.find();
 
     res.status(200).json({ products });
   } catch (error) {
@@ -79,6 +79,18 @@ export const getProductById = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({ product });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const getProductsByUserId = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    const products = await Product.find({ createdBy: userId });
+
+    res.status(200).json({ products });
   } catch (error) {
     res.status(500).json({ error: error });
   }

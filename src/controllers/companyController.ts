@@ -4,8 +4,9 @@ import Shop from '../models/Shop';
 
 export const createCompany = async (req: Request, res: Response) => {
     try {
-      const { name, owner } = req.body;
-
+      const { name } = req.body;
+      const owner = (req as any).user.userId;
+      
       const company = new Company({ name, owner })
       await company.save()
 
@@ -51,8 +52,6 @@ export const addShopToCompany = async (req: Request, res: Response) => {
 
     const shop = await Shop.findById(shopId)
     const company = await Company.findById(companyId)
-
-    console.log({ shop })
  
     if (!shop || !company) {
       return res.status(404).json({ message: 'Company or shop not found' });

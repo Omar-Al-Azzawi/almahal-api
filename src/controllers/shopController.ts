@@ -5,7 +5,8 @@ import Warehouse from '../models/warehouse'
 
 export const createShop = async (req: Request, res: Response) => {
   try {
-    const { name, owner } = req.body;
+    const { name } = req.body;
+    const owner = (req as any).user.userId;
 
     const shop = new Shop({ name, owner });
     await shop.save();

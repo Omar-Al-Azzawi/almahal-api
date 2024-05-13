@@ -2,7 +2,7 @@ import mongoose, { Schema, Types } from 'mongoose';
 
 export type CompanyDocument = Document & {
     name: string
-    owner: Types.ObjectId
+    owner?: Types.ObjectId
     shops: Types.ObjectId[]
 }
 
