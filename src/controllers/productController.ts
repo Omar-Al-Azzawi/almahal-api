@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Product from '../models/Product';
 import User from '../models/User';
 import Note from '../models/Note';
@@ -21,7 +21,7 @@ dotenv.config()
 //   }
 // });
 
-export const createProduct = async (req: Request, res: Response) => {
+export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const createdBy = (req as any).user.userId
     const { name, description, type, quantity, length, manufacture, price } = req.body;
@@ -55,21 +55,21 @@ export const createProduct = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: 'Product created successfully', product });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 };
 
-export const getProducts = async (req: Request, res: Response) => {
+export const getProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {    
     const products = await Product.find();
 
     res.status(200).json({ products });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 };
 
-export const getProductById = async (req: Request, res: Response) => {
+export const getProductById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const productId = req.params.id;
     const product = await Product.findById(productId);
@@ -80,11 +80,11 @@ export const getProductById = async (req: Request, res: Response) => {
 
     res.status(200).json({ product });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 };
 
-export const getProductsByUserId = async (req: Request, res: Response) => {
+export const getProductsByUserId = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.params.userId;
 
@@ -92,11 +92,11 @@ export const getProductsByUserId = async (req: Request, res: Response) => {
 
     res.status(200).json({ products });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 };
 
-export const updateProduct = async (req: Request, res: Response) => {
+export const updateProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const productId = req.params.id;
     const updateData = req.body;
@@ -109,11 +109,11 @@ export const updateProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: 'Product updated successfully', product });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 };
 
-export const deleteProduct = async (req: Request, res: Response) => {
+export const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const productId = req.params.id;
 
@@ -125,11 +125,11 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: 'Product deleted successfully' });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 };
 
-export const addNoteToProduct = async (req: Request, res: Response) => {
+export const addNoteToProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { productId, type, title, content } = req.body;
     const userId = (req as any).user.userId;
@@ -141,7 +141,7 @@ export const addNoteToProduct = async (req: Request, res: Response) => {
     }
 
     const user = await User.findById(userId);
-    
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -158,11 +158,11 @@ export const addNoteToProduct = async (req: Request, res: Response) => {
     product.notes.push(note._id);
     await product.save();res.status(201).json({ message: 'Note added to product successfully', note });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 }
 
-export const getProductNotes = async (req: Request, res: Response) => {
+export const getProductNotes = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const productId = req.params.id
     const product = await Product.findById(productId).populate('notes');
@@ -175,6 +175,6 @@ export const getProductNotes = async (req: Request, res: Response) => {
 
     res.status(200).json({ notes });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 }

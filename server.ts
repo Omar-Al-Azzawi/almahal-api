@@ -10,10 +10,12 @@ import companyRoutes from './src/routes/companyRoutes'
 import { authenticateToken } from './src/middlewares/authMiddleware';
 import dotenv from "dotenv"
 import connectToMongoDB from './db';
+import ErrorHandler from './src/middlewares/errorHandlerMiddleware'
 
 const app = express();
 
 dotenv.config()
+
 app.use(cors());
 app.use(helmet())
 app.use(bodyParser.json());
@@ -26,6 +28,8 @@ app.use('/products', productRoutes);
 app.use('/shop', shopRoutes);
 app.use('/warehouse', warehouseRoutes);
 app.use('/company', companyRoutes)
+
+app.use(ErrorHandler)
 
 app.get('/protected-route', authenticateToken, (req, res) => {
   res.status(200).json({ message: 'You have accessed the protected route', user: req.body });

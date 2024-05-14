@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Warehouse from '../models/warehouse';
 import Product from '../models/Product';
 import Shop from '../models/Shop'
 
-export const createWarehouse = async (req: Request, res: Response) => {
+export const createWarehouse = async (req: Request, res: Response, next: NextFunction) => {
     try {
        const { name } = req.body;
        const owner = (req as any).user.userId;
@@ -13,11 +13,11 @@ export const createWarehouse = async (req: Request, res: Response) => {
 
        res.status(201).json({ message: 'Warehouse created successfully', shop });
     } catch (error) {
-        res.status(500).json({ error: error });
+        next(error)
     }
 }
 
-export const addProductToWarehouse = async (req: Request, res: Response) => {
+export const addProductToWarehouse = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { productId, warehouseId } = req.body;
 
@@ -41,11 +41,11 @@ export const addProductToWarehouse = async (req: Request, res: Response) => {
 
         res.status(200).json({ message: 'Product added to warehouse successfully', product, warehouse });
     } catch (error) {
-        res.status(500).json({ error: error });
+        next(error)
     }
 }
 
-export const getWarehouseProduct = async (req: Request, res: Response) => {
+export const getWarehouseProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { warehouseId } = req.params;
     
@@ -57,6 +57,6 @@ export const getWarehouseProduct = async (req: Request, res: Response) => {
     
         res.status(200).json({ products: warehouse.products });
       } catch (error) {
-        res.status(500).json({ error: error });
+        next(error)
       }
 }

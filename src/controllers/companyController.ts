@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Company from '../models/Company';
 import Shop from '../models/Shop';
 
-export const createCompany = async (req: Request, res: Response) => {
+export const createCompany = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { name } = req.body;
       const owner = (req as any).user.userId;
@@ -12,11 +12,11 @@ export const createCompany = async (req: Request, res: Response) => {
 
       res.status(201).json({ message: 'Shop created successfully', company })
     } catch (error) {
-      res.status(500).json({ error: error });
+      next(error)
     }
 }
 
-export const getCompanyById = async (req: Request, res: Response) => {
+export const getCompanyById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { companyId } = req.body 
       
@@ -28,11 +28,11 @@ export const getCompanyById = async (req: Request, res: Response) => {
 
       res.status(200).json({ company: company })
     } catch (error) {
-      res.status(500).json({ error: error });
+      next(error)
     }
 }
 
-export const getCompanies = async (req: Request, res: Response) => {
+export const getCompanies = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const companies = await Company.find();
 
@@ -42,11 +42,11 @@ export const getCompanies = async (req: Request, res: Response) => {
 
         res.status(201).json({ companies })
     } catch (error) {
-        res.status(500).json({ error: error})
+        next(error)
     }
 }
 
-export const addShopToCompany = async (req: Request, res: Response) => {
+export const addShopToCompany = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { shopId, companyId } = req.body;
 
@@ -62,6 +62,6 @@ export const addShopToCompany = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: 'Shop added to company successfully', company, shop });
   } catch (error) {
-    res.status(500).json({ error: error})
+    next(error)
   }
 }

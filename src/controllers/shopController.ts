@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Shop from '../models/Shop';
 import Product from '../models/Product';
 import Warehouse from '../models/warehouse'
 
-export const createShop = async (req: Request, res: Response) => {
+export const createShop = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name } = req.body;
     const owner = (req as any).user.userId;
@@ -13,11 +13,11 @@ export const createShop = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: 'Shop created successfully', shop });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 };
 
-export const addProductToShop = async (req: Request, res: Response) => {
+export const addProductToShop = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { productId, shopId } = req.body;
 
@@ -41,11 +41,11 @@ export const addProductToShop = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: 'Product added to shop successfully', product, shop });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 };
 
-export const getShopProducts = async (req: Request, res: Response) => {
+export const getShopProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { shopId } = req.params;
 
@@ -57,6 +57,6 @@ export const getShopProducts = async (req: Request, res: Response) => {
 
     res.status(200).json({ products: shop.products });
   } catch (error) {
-    res.status(500).json({ error: error });
+    next(error)
   }
 };
