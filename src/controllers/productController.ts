@@ -131,12 +131,17 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
 export const addNoteToProduct = async (req: Request, res: Response) => {
   try {
-    const { productId, type, title, content, ownerId } = req.body;
+    const { productId, type, title, content } = req.body;
+    const userId = (req as any).user.userId;
+
     const product = await Product.findById(productId);
+
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
-    const user = await User.findById(ownerId);
+
+    const user = await User.findById(userId);
+    
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -145,7 +150,7 @@ export const addNoteToProduct = async (req: Request, res: Response) => {
       type,
       title,
       content,
-      owner: ownerId
+      owner: userId
     });
 
     await note.save();
