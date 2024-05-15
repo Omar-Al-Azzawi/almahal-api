@@ -1,6 +1,10 @@
 import express from 'express';
 import { authenticateToken } from "../middlewares/authMiddleware"
-import { createWarehouse, addProductToWarehouse, getWarehouseProduct } from '../controllers/warehouseController';
+import { 
+    createWarehouse, 
+    addProductToWarehouse, 
+    getWarehouseProduct 
+} from '../controllers/warehouseController';
 
 const router = express.Router();
 

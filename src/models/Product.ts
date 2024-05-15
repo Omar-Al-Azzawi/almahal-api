@@ -12,6 +12,7 @@ export type ProductDocument = Document & {
   price: number
   notes: Types.ObjectId[]
   createdBy: UserDocument
+  visibility: 'public' | 'private';
 }
 
 const productSchema = new Schema<ProductDocument>(
@@ -29,6 +30,7 @@ const productSchema = new Schema<ProductDocument>(
             ref: 'User',
             required: true
         },
+        visibility: { type: String, enum: ['public', 'private'], default: 'private' }
     },
     {
         timestamps: true

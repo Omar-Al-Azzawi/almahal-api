@@ -35,7 +35,7 @@ app.get('/protected-route', authenticateToken, (req, res) => {
   res.status(200).json({ message: 'You have accessed the protected route', user: req.body });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
